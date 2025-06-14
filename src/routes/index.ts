@@ -3,7 +3,7 @@ import cors from 'cors';
 import login from './login';
 import gps from './gps';
 import register from './register';
-import { requireAuth } from '../middleware/ authMiddleware';
+import { requireAuth } from '../middleware/authMiddleware';
 
 const app = express();
 app.use(cors());

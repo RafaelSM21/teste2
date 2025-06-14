@@ -13,9 +13,7 @@ $do$;
 -- Create the database if it doesn't exist
 CREATE DATABASE "LynchAreaDB"
     WITH
-    OWNER = lynch_admin
+    OWNER = postgres
     ENCODING = 'UTF8'
-    LC_COLLATE = 'Portuguese_Brazil.1252'
-    LC_CTYPE = 'Portuguese_Brazil.1252'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1; 

@@ -50,3 +50,18 @@ Ensure you have the following installed:
    ```bash
    npm run dev
    
+## Rollback
+```bash
+ssh user@server "cd /app/lynch-area && docker-compose up -d --force-recreate --no-deps app_previous"
+
+## Docker Deployment
+```bash
+# Build local
+docker build -t lynch-area-app .
+
+# Executar com Docker Compose
+docker-compose up -d
+
+## Monitoramento
+- Acesse `/metrics` para dados no formato Prometheus
+- Importe este dashboard no Grafana: [Node.js Exporter Full](https://grafana.com/grafana/dashboards/1860)

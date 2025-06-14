@@ -1,7 +1,12 @@
 import request from 'supertest';
-import app from '../../server/index';
+
 import pool from '../../db';
 import { jest } from '@jest/globals';
+import app from '../../routes';
+
+type QueryResult = { rows: any[] };
+
+const mockedPool = pool as unknown as { query: jest.Mock<any>; end: jest.Mock<any> };
 
 jest.mock('../../db', () => ({
     query: jest.fn(),
@@ -9,12 +14,8 @@ jest.mock('../../db', () => ({
 }));
 
 describe('API E2E Tests', () => {
-    afterAll(async () => {
-        await pool.end();
-    });
-
     test('POST /register returns 201', async () => {
-        (pool.query as jest.Mock)
+        mockedPool.query
             .mockResolvedValueOnce({ rows: [] }) // User doesn't exist
             .mockResolvedValueOnce({ rows: [{ id: 1 }] }); // User created
 
@@ -26,12 +27,12 @@ describe('API E2E Tests', () => {
                 password: 'password123',
                 role: 'user'
             });
-        
+
         expect(response.status).toBe(201);
     });
 
     test('POST /login returns 200 with valid credentials', async () => {
-        (pool.query as jest.Mock)
+        mockedPool.query
             .mockResolvedValueOnce({ 
                 rows: [{ 
                     id: 1, 

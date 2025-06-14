@@ -3,8 +3,6 @@ CREATE DATABASE "LynchAreaDB"
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
-    LC_COLLATE = 'en_US.utf8'
-    LC_CTYPE = 'en_US.utf8'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 
@@ -17,14 +15,16 @@ $do$
 BEGIN
    IF NOT EXISTS (
       SELECT FROM pg_catalog.pg_roles
-      WHERE  rolname = 'lynch_admin') THEN
-      CREATE ROLE lynch_admin WITH LOGIN PASSWORD '@rl3yz1nh4ch@n';
+      WHERE  rolname = 'postgres') THEN
+      CREATE ROLE postgres WITH LOGIN PASSWORD '@rl3yz1nh4ch@n';
    END IF;
 END
 $do$;
 
 -- Grant privileges to the role
-GRANT ALL PRIVILEGES ON DATABASE "LynchAreaDB" TO lynch_admin;
+GRANT ALL PRIVILEGES ON DATABASE "LynchAreaDB" TO postgres;
+
+console.log("Connecting to:", process.env.DATABASE_URL);
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
@@ -45,6 +45,6 @@ CREATE TABLE IF NOT EXISTS cordinates(
 )
 
 
--- Grant privileges on users table to lynch_admin
-GRANT ALL PRIVILEGES ON TABLE users TO lynch_admin;
-GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO lynch_admin; 
+-- Grant privileges on users table to postgres
+GRANT ALL PRIVILEGES ON TABLE users TO postgres;
+GRANT USAGE, SELECT ON SEQUENCE users_id_seq TO postgres; 
