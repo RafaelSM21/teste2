@@ -50,18 +50,53 @@ Ensure you have the following installed:
    ```bash
    npm run dev
    
-## Rollback
+## Rollback Manual
 ```bash
-ssh user@server "cd /app/lynch-area && docker-compose up -d --force-recreate --no-deps app_previous"
+# Acesse o servidor
+ssh user@server
 
-## Docker Deployment
-```bash
-# Build local
-docker build -t lynch-area-app .
-
-# Executar com Docker Compose
-docker-compose up -d
+# Execute:
+cd /var/www/lynch-area
+git log --oneline  # Encontre o hash do commit anterior
+git reset --hard <commit-hash>
+npm ci
+npm run build
+pm2 restart lynch-area-api
 
 ## Monitoramento
-- Acesse `/metrics` para dados no formato Prometheus
-- Importe este dashboard no Grafana: [Node.js Exporter Full](https://grafana.com/grafana/dashboards/1860)
+
+### Endpoints
+- `GET /health`: Health check da aplicação
+- `GET /metrics`: Métricas no formato Prometheus
+
+### Configuração do Dashboard
+1. Instale o Prometheus e Grafana
+2. Configure o Prometheus para coletar métricas de `/metrics`
+3. Importe o dashboard [Node.js Exporter Full](https://grafana.com/grafana/dashboards/1860) no Grafana
+
+### Logs
+Os logs estão disponíveis em:
+- `logs/error.log`: Erros da aplicação
+- `logs/combined.log`: Todos os logs
+
+## CI/CD Pipeline
+1. Testes executados em cada push/PR
+2. Deploy automático após merge no main
+3. Rollback manual via Git reset
+
+## Como Executar
+```bash
+# Instalação
+npm install
+
+# Configuração
+Crie um arquivo .env com:
+DATABASE_URL="postgresql://postgres:123@localhost:5432/LynchAreaDB"
+JWT_SECRET="seu_segredo"
+
+# Execução
+npm run build
+npm start
+
+# Testes
+npm test

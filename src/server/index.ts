@@ -1,28 +1,33 @@
-import express from 'express';
-import { httpMetrics, httpRequestDuration } from '../utils/monitoring';
-import * as promClient from 'prom-client';
+import app from '../routes';
+import { httpLogger, httpRequestDuration, errorCounter } from '../utils/monitoring';
+import promClient from 'prom-client';
 
-const app = express();
+app.use(httpLogger);
 
-// Middlewares
-app.use(express.json());
-app.use(httpMetrics);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP' });
+// Middleware de métricas
+app.use((req, res, next) => {
+  const end = httpRequestDuration.startTimer();
+  
+  res.on('finish', () => {
+    end({
+      method: req.method,
+      route: req.route?.path || req.path,
+      status: res.statusCode
+    });
+    
+    if (res.statusCode >= 400) {
+      errorCounter.inc({
+        status: res.statusCode,
+        route: req.route?.path || req.path
+      });
+    }
+  });
+  
+  next();
 });
 
-// Metrics endpoint
+// Endpoint de métricas
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', promClient.register.contentType);
   res.end(await promClient.register.metrics());
-});
-
-// ... outras rotas ...
-
-// Inicia o servidor
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.info(`Server running on port ${PORT}`);
 });

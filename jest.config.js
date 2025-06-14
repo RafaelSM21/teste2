@@ -1,16 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  collectCoverage: true,
-  coverageDirectory: 'coverage',
-  testMatch: [
-    "**/_tests_/unit/**/*.test.ts",
-    "**/e2e/**/*.test.ts"
-  ],
-  modulePaths: ['<rootDir>/src'],
+  testMatch: ['**/_tests_/e2e/**/*.test.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  moduleFileExtensions: ['ts', 'js', 'json'],
-  transform: {
-    '^.+\\.ts$': 'ts-jest'
-  }
+  globalSetup: '<rootDir>/jest.e2e.setup.ts',
+  globalTeardown: '<rootDir>/jest.e2e.teardown.ts',
 };

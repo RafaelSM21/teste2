@@ -11,15 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Production
-        uses: appleboy/ssh-action@v1
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /app/lynch-area
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
-            docker-compose logs -f --tail=100 > deploy_$(date +%s).log
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      
+      - name: Deploy to Production
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd /var/www/lynch-area &&
+            git pull origin main &&
+            npm ci &&
+            npm run build &&
+            pm2 restart lynch-area-api
+          "
