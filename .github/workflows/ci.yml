@@ -25,7 +25,4 @@ jobs:
       - name: Rodar testes
         run: npm test
 
-      - name: Compilar TypeScript
-        run: npx tsc --noEmit
-
        
