@@ -1,0 +1,107 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+jspm_packages/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+logs
+*.log
+.pnpm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing and coverage
+coverage
+*.lcov
+.nyc_output
+
+# Build tools
+.grunt
+bower_components
+.lock-wscript
+build/Release
+
+# Caches
+.npm
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+.cache
+.parcel-cache
+.temp
+.docusaurus
+
+# Other frameworks output
+.next
+out
+.nuxt
+.vuepress/dist
+
+# Snowpack
+web_modules/
+
+# Serverless
+.serverless/
+.fusebox/
+.dynamodb/
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env*.local
+
+# macOS
+.DS_Store
+*.pem
+
+# Tools
+.tern-port
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# typescript
+*.tsbuildinfo
+
+# Expo app example
+app-example
